@@ -31,6 +31,6 @@ foo$date
 
 dir.ea("I:/Departments/Research/Wagenius/Stuart's Reprints/Trager1998")
 
-setwd(choose.dir())
+setwd(choose.dir()) #choose.dir is windows-specific too (and MacOS?)
 
 getwd()
