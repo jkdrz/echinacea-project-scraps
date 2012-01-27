@@ -6,7 +6,7 @@ dir.ea <- function(path = ".") {
    if(path == ".") path <- getwd()
    dir <- file.info(list.files(path, full.names = FALSE, recursive = TRUE, include.dirs = FALSE))
    dir$fileName <- row.names(dir)
-   dir <- dir[ , c("fileName", "size", "isdir", "mode", "mtime", "ctime")] #dropped exe for compat.
+   dir <- dir[ , c("fileName", "size", "isdir", "mode", "mtime", "ctime", "atime")] #dropped exe for compat.
    row.names(dir) <- NULL
    date <- Sys.time()
    ans <- list(dir = dir,
