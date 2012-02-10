@@ -15,11 +15,16 @@ setdiff(y,x) #shows values in y not found in x
 scanCompare <-  function(x,y) {
    extraScans <- setdiff(x,y)
    notScanned <- setdiff(y,x)
-   paste("scans without associated letnos: ", extraScans)
-   paste("letnos that have yet to be scanned: ", notScanned)
-}
+#    paste("scans without associated letnos: ", extraScans)
+#    paste("letnos that have yet to be scanned: ", notScanned)
+list(notScanned = notScanned, extraScans = extraScans)   
+   }
 
 #test data. we'll need to finesse filenames into letnos
 scannedImages <- c("AA-1000", "BB-2000", "CC-3000", "DD-4000", "FF-6000")
 actualLetnos  <- c("AA-1000", "BB-2000", "CC-3000", "DD-4000", "EE-5000")
 scanCompare(scannedImages, actualLetnos)
+
+
+
+

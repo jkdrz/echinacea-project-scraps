@@ -34,3 +34,23 @@ dir.ea("I:/Departments/Research/Wagenius/Stuart's Reprints/Trager1998")
 setwd(choose.dir()) #choose.dir is windows-specific too (and MacOS?)
 
 getwd()
+
+#############
+# make new function that translates filename to letno
+
+# start here...
+
+setwd("I:\\Departments\\Research\\DiClemente\\Allegra's 2009")
+aa <- dir.ea()
+
+aa
+
+let <- substr(aa$dir$fileName, 6, 7)
+no  <- substr(aa$dir$fileName, 2, 5)
+letno <- paste(let, no, sep= "-")
+letno
+
+aa$dir$letno <- letno
+
+aa
+
