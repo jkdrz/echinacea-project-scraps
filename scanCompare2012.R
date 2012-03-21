@@ -1,7 +1,7 @@
 # this script will pull the filenames from directories and compare them against the 
 # 2011 harvest list. some of the paths are hard-coded and some are not.
-# written 16 Mar 2012, first draft by josh, dir.ea from stuart's code (eventually it'll 
-# be part of an echinacea project library)
+# written 16 Mar 2012, first draft by josh, dir.ea from stuart's code 
+# (eventually it'll be part of an echinacea project library)
 
 #paths
 setwd(choose.dir()) # choose the thousands
