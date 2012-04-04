@@ -48,3 +48,4 @@ moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\8000\\",
       randomHarvList$filename[randomHarvList$no < 9000 & randomHarvList$no >= 8000] , sep="")
 setwd("C:\\\\cg2011counting\\")
 write.table(moveFiles, file="moveFiles8000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+#again, find the batch file and double-click to run it. it's slow.
