@@ -34,10 +34,14 @@ randomHarvList <- data.frame(randomHarvList, happyDirs[1:length(randomHarvList$l
 names(randomHarvList)[29] <- "happyDirs"
 leftoverHappyDirs <- happyDirs[(length(randomHarvList$letnoHarv)+1):length(happyDirs)]
 
-# create directory structure. this is set to false so it won't try to run if you do the whole script
-if(FALSE){
+#write out some useful files
+#write.csv(randomHarvList, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.RandomHarvList.csv")
+#write.csv(leftoverHappyDirs, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.LeftoverHappyDirs.csv")
+
+# create directory structure. only run this this first time.
   setwd("C:\\\\cg2011counting\\")
   dirCommands <- paste("mkdir ", "C:\\cg2011counting\\", unique(randomHarvList$happyDirs), sep="")
   write.table(dirCommands, file="mkdirCommands.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
   #this writes hard paths. find the .bat file and double-click it to run it.
-  }
+
+
