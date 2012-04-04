@@ -31,3 +31,13 @@ happyDirs <- rep(happyList, each=6)
 randomHarvList <- sample(harvList)
 happyDirs[1:length(randomHarvList$letnoHarv)]
 randomHarvList <- data.frame(randomHarvList, happyDirs[1:length(randomHarvList$letnoHarv)])
+names(randomHarvList)[29] <- "happyDirs"
+leftoverHappyDirs <- happyDirs[(length(randomHarvList$letnoHarv)+1):length(happyDirs)]
+
+# create directory structure. this is set to false so it won't try to run if you do the whole script
+if(FALSE){
+  setwd("C:\\\\cg2011counting\\")
+  dirCommands <- paste("mkdir ", "C:\\cg2011counting\\", unique(randomHarvList$happyDirs), sep="")
+  write.table(dirCommands, file="mkdirCommands.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+  #this writes hard paths. find the .bat file and double-click it to run it.
+  }
