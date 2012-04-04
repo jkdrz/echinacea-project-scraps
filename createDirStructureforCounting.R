@@ -2,14 +2,6 @@
 # this script pulls data from the final harvest list (ideally it would pull from scan files)
 # this will (eventually) generate a folder structure and assign letnos/filenames to that
 
-####################################################
-#todo:                                             #
-#figure out filename case sensitivity issues       #
-#not every filename is in lowercase, which might   #
-#end up being problematic, but i'm not sure if R   #
-#is case-sensitive when it runs through system()   #
-####################################################
-
 #import harvest list, fix letnos (code from scanCompare2012.R)
 harvList <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\2011.CG1.Harvest.List.reconciled.csv", na.strings="")
 harvList$letnoHarv <- as.character(harvList$letnoHarv) #you need to make these character vectors
@@ -44,4 +36,15 @@ leftoverHappyDirs <- happyDirs[(length(randomHarvList$letnoHarv)+1):length(happy
   write.table(dirCommands, file="mkdirCommands.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
   #this writes hard paths. find the .bat file and double-click it to run it.
 
-
+# move files around this uses hard paths, which is ugly, but i think it's the only way
+#turn letno into nolet.jpg
+randomHarvList$no <- as.integer(substr(harvList$letnoHarv, 4, 7))
+randomHarvList$let <- substr(harvList$letnoHarv, 1, 2) #windows is not case sensitive. no problem
+randomHarvList$filename <- paste(harvList$no, harvList$let, ".jpg", sep="")
+#put together the copy commands with hard paths. use subsets to do batches manually.
+moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\8000\\", 
+      randomHarvList$filename[randomHarvList$no < 9000 & randomHarvList$no >= 8000], " C:\\\\cg2011counting\\",
+      randomHarvList$happyDirs[randomHarvList$no < 9000 & randomHarvList$no >= 8000], "\\",
+      randomHarvList$filename[randomHarvList$no < 9000 & randomHarvList$no >= 8000] , sep="")
+setwd("C:\\\\cg2011counting\\")
+write.table(moveFiles, file="moveFiles8000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
