@@ -15,17 +15,22 @@ happy <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\happyWords.csv"
 #figure out how many records we have and how many directories we need
 length(harvList$letnoHarv) #2892 files, at the top end. 6 in each dir, 482 directories
 
+harvList$no <- as.integer(substr(harvList$letnoHarv, 4, 7))
+inb1and2 <- harvList$no < 9000 & harvList$no >= 8000
+
+h8000 <- harvList[inb1and2, ]
+
 #we'll add a few dummy directories, just in case. pull out 490 entries
-happyList <- sample(happy$lowercase, 490, replace=FALSE)
+happyList <- sample(happy$lowercase, 230, replace=FALSE)
 happyDirs <- rep(happyList, each=6)
 
 # put together the vectors, keeping lets and nos, so i can actually write out files in batches
 
-randomHarvList <- harvList[sample(1: dim(harvList)[1]), ]
-happyDirs[1:length(randomHarvList$letnoHarv)]
-randomHarvList <- data.frame(randomHarvList, happyDirs[1:length(randomHarvList$letnoHarv)])
-names(randomHarvList)[29] <- "happyDirs"
-leftoverHappyDirs <- happyDirs[(length(randomHarvList$letnoHarv)+1):length(happyDirs)]
+h8000 <- h8000[sample(1: dim(h8000)[1]), ]
+happyDirs8000 <- happyDirs[1:230]
+randomHarvList8000 <- data.frame(h8000, happyDirs8000)
+names(randomHarvList8000)[29] <- "happyDirs"
+leftoverHappyDirs <- happyDirs[(length(randomHarvList8000$letnoHarv)+1):length(happyDirs)]
 
 #write out some useful files
 #write.csv(randomHarvList, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.RandomHarvList.csv")
