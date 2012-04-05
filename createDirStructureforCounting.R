@@ -20,7 +20,8 @@ happyList <- sample(happy$lowercase, 490, replace=FALSE)
 happyDirs <- rep(happyList, each=6)
 
 # put together the vectors, keeping lets and nos, so i can actually write out files in batches
-randomHarvList <- sample(harvList)
+
+randomHarvList <- harvList[sample(1: dim(harvList)[1]), ]
 happyDirs[1:length(randomHarvList$letnoHarv)]
 randomHarvList <- data.frame(randomHarvList, happyDirs[1:length(randomHarvList$letnoHarv)])
 names(randomHarvList)[29] <- "happyDirs"
