@@ -2,10 +2,13 @@
 # 2011 harvest list. some of the paths are hard-coded and some are not.
 # written 16 Mar 2012, first draft by josh, dir.ea from stuart's code 
 # (eventually it'll be part of an echinacea project library)
+# this needs to be run on a machine with I drive access and the scans in a 
+# directory with scans sorted into 1000s. T2000 is my current working machine for this.
 
 #paths
-setwd(choose.dir()) # choose the thousands, or do the next line
-setwd("C:\\\\2011_scans_sorted\\4000")
+# set which batch you'll use. make sure c:\2011_scans_sorted has that numeric directory
+batch <- 4000 
+setwd(paste("C:\\\\2011_scans_sorted\\", batch, sep=""))
 
 # path to harvest list: set na.strings since not every blank was being picked up as NA
 harvList <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\2011.CG1.Harvest.List.reconciled.csv", na.strings="")
@@ -42,12 +45,13 @@ letno <- paste(let, no, sep= "-") # SCANNED FILENAMES
 
 #put the issues into vectors. make sure to adjust the numbers in the first missingScans line
 extraScans   <- setdiff(letno, harvList$letnoHarv) #scanned files with filename errors
-missingScans <- setdiff(harvList$letnoHarv[harvList$no < 5000 & harvList$no >= 4000], letno) #letnos without scans
+missingScans <- setdiff(harvList$letnoHarv[harvList$no < (batch+1000) & harvList$no >= batch], letno) #letnos without scans
 missingScans <- na.omit(missingScans) #for some reason, the previous command makes NAs. omit them
 missingScansdf <- harvList[harvList$letnoHarv %in% missingScans,]
 
 
 #information
+# you'll want to run these bits manually, especially if you are checking multiple directories
 # if you see output like .J-4496 or other strangeness in letnos, it's probably a file naming
 # issue. fix the files and rerun starting from the start here comment
 cat("the following letnos / filenames are not in the harvest list:", extraScans, "\ncheck the image for the correct letno")
