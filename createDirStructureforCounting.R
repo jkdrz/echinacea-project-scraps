@@ -25,7 +25,8 @@ harvList$filename <- paste(harvList$no, harvList$let, ".jpg", sep="")#turn letno
 # 8000 batch
 #
 ###############################################################################
-inb1and2 <- harvList$no < 9000 & harvList$no >= 8000
+batch    <- 8000
+inb1and2 <- harvList$no < (batch+1000) & harvList$no >= batch
 h8000 <- harvList[inb1and2, ]
 
 #we'll add a few dummy directories, just in case. pull out 490 entries
