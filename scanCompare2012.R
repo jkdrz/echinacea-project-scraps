@@ -72,6 +72,6 @@ missingScansFull <- subset(missingScansFull, select=-c(cgheadid,nmmp,emmr,linePa
                                                        S.2,S.3,S.4,letnoCorrected,Row,Pos,tt,
                                                        gBagHarv,S.5,harvnoteCorrected,S.6,Block,X,
                                                        cgheadid.1,gBagHarv.1,S.5.1,harvnoteHarv.1,
-                                                       S.6.1,Block.1)) #i should remove NH
+                                                       S.6.1,Block.1))
 write.csv(missingScansFull, file="..\\missingScansDatasheet.csv") #this writes to the directory above
-write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")
+write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")     #don't overwrite existing files, k?
