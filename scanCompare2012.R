@@ -47,8 +47,8 @@ letno <- paste(let, no, sep= "-") # SCANNED FILENAMES
 extraScans   <- setdiff(letno, harvList$letnoHarv) #scanned files with filename errors
 missingScans <- setdiff(harvList$letnoHarv[harvList$no < (batch+1000) & harvList$no >= batch], letno) #letnos without scans
 missingScans <- na.omit(missingScans) #for some reason, the previous command makes NAs. omit them
-missingScansdf <- harvList[harvList$letnoHarv %in% missingScans,]
-missingScansdf <- missingScansdf[missingScansdf$gBagCorrected != "NH", ]
+missingScansdf <- harvList[harvList$letnoHarv %in% missingScans,] #pull out only missing scans
+missingScansdf <- missingScansdf[missingScansdf$gBagCorrected != "NH", ] #remove not-harvested
 
 ###############################################################################
 #information
