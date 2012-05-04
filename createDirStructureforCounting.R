@@ -1,6 +1,7 @@
 # written spring 2012 by jd. happy words list found by kt
 # this script pulls data from the final harvest list (ideally it would pull from scan files)
 # this will (eventually) generate a folder structure and assign letnos/filenames to that
+# don't run the entire script at once, you might clobber important files.
 
 #import harvest list, fix letnos (code from scanCompare2012.R)
 harvList <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\2011.CG1.Harvest.List.reconciled.csv", na.strings="")
@@ -19,9 +20,13 @@ harvList$let <- substr(harvList$letnoHarv, 1, 2)
 harvList$no <- as.integer(substr(harvList$letnoHarv, 4, 7))
 harvList$filename <- paste(harvList$no, harvList$let, ".jpg", sep="")#turn letno into nolet.jpg
 
+###############################################################################
+#
+# 8000 batch
+#
+###############################################################################
 batch    <- 8000
 inb1and2 <- harvList$no < (batch+1000) & harvList$no >= batch
-
 h8000 <- harvList[inb1and2, ]
 
 #we'll add a few dummy directories, just in case. pull out 490 entries
@@ -54,4 +59,43 @@ moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\8000\\",
       randomHarvList8000$filename[randomHarvList8000$no < 9000 & randomHarvList8000$no >= 8000] , sep="")
 setwd("C:\\\\cg2011counting\\")
 write.table(moveFiles, file="moveFiles8000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+#again, find the batch file and double-click to run it. it's slow.
+
+###############################################################################
+#
+# 4000 batch
+#
+###############################################################################
+inb1and2 <- harvList$no < 5000 & harvList$no >= 4000
+h4000 <- harvList[inb1and2, ]
+
+#we'll add a few dummy directories, just in case. pull out 490 entries
+happyList <- sample(happy$lowercase, 230, replace=FALSE) #FIXME ###############
+happyDirs <- rep(happyList, each=6)
+
+# put together the vectors, keeping lets and nos, so i can actually write out files in batches
+
+h4000 <- h4000[sample(1: dim(h4000)[1]), ] #sample the dataframe. sample(h8000) won't work
+happyDirs4000 <- happyDirs[1:230]
+randomHarvList4000 <- data.frame(h4000, happyDirs4000)
+leftoverHappyDirs <- happyDirs[(length(randomHarvList4000$letnoHarv)+1):length(happyDirs)]
+
+#write out some useful files
+write.csv(randomHarvList4000, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.HarvList4000.csv")
+write.csv(leftoverHappyDirs, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.LeftoverHappyDirs-40008000.csv")
+
+# create directory structure. only run this this first time.
+setwd("C:\\\\cg2011counting\\")
+dirCommands <- paste("mkdir ", "C:\\cg2011counting\\", unique(randomHarvList4000$happyDirs4000), sep="")
+write.table(dirCommands, file="mkdirCommands.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+#this writes hard paths. find the .bat file and double-click it to run it.
+
+# move files around this uses hard paths, which is ugly, but i think it's the only way
+#put together the copy commands with hard paths. use subsets to do batches manually.
+moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\4000\\", 
+                   randomHarvList8000$filename[randomHarvList8000$no < 5000 & randomHarvList8000$no >= 4000], " C:\\\\cg2011counting\\",
+                   randomHarvList8000$happyDirs[randomHarvList8000$no < 5000 & randomHarvList8000$no >= 4000], "\\",
+                   randomHarvList8000$filename[randomHarvList8000$no < 5000 & randomHarvList8000$no >= 4000] , sep="")
+setwd("C:\\\\cg2011counting\\")
+write.table(moveFiles, file="moveFiles4000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
 #again, find the batch file and double-click to run it. it's slow.
