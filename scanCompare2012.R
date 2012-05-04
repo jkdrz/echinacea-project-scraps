@@ -7,7 +7,9 @@
 
 #paths
 # set which batch you'll use. make sure c:\2011_scans_sorted has that numeric directory
-batch <- 1000 
+batch <- 8000
+firstrun <- FALSE #set to TRUE the first time you run the script
+output   <- FALSE #set to true if you want to output a CSV. be careful not to overwrite existing files
 setwd(paste("C:\\\\2011_scans_sorted\\", batch, sep=""))
 
 # path to harvest list: set na.strings since not every blank was being picked up as NA
@@ -55,23 +57,31 @@ missingScansdf <- missingScansdf[missingScansdf$gBagCorrected != "NH", ] #remove
 # you'll want to run these bits manually, especially if you are checking multiple directories
 # if you see output like .J-4496 or other strangeness in letnos, it's probably a file naming
 # issue. fix the files and rerun starting from the start here comment
-extraScansFull <- extraScans      #first run only
-missingScansFull <- missingScansdf#first run only
 ###############################################################################
+
+if(firstrun == TRUE){
+  extraScansFull <- extraScans
+  missingScansFull <- missingScansdf
+  }
+if(firstrun == FALSE){
+  extraScansFull <- c(extraScans, extraScansFull)
+  missingScansFull <- rbind(missingScansFull, missingScansdf)
+  }
+
 cat("the following letnos / filenames are not in the harvest list:", extraScans, "\ncheck the image for the correct letno")
 
-#some code to bind together multiple issues. you'll want to run these each time
-extraScansFull <- c(extraScans, extraScansFull)
-missingScansFull <- rbind(missingScansFull, missingScansdf)
+
 
 ###############################################################################
 # run this AFTER you've c(*,*) and rbinded everything together
 ###############################################################################
-#cut out columns and write out CSVs for turning into FIXME datasheets
-missingScansFull <- subset(missingScansFull, select=-c(cgheadid,nmmp,emmr,linePaper,garden,S.1,S.1,
+if(output == TRUE){
+  #cut out columns and write out CSVs for turning into FIXME datasheets
+  missingScansFull <- subset(missingScansFull, select=-c(cgheadid,nmmp,emmr,linePaper,garden,S.1,S.1,
                                                        S.2,S.3,S.4,letnoCorrected,Row,Pos,tt,
                                                        gBagHarv,S.5,harvnoteCorrected,S.6,Block,X,
                                                        cgheadid.1,gBagHarv.1,S.5.1,harvnoteHarv.1,
                                                        S.6.1,Block.1))
-write.csv(missingScansFull, file="..\\missingScansDatasheet.csv") #this writes to the directory above
-write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")     #don't overwrite existing files, k?
+  write.csv(missingScansFull, file="..\\missingScansDatasheet.csv") #this writes to the directory above
+  write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")     #don't overwrite existing files, k?
+}
