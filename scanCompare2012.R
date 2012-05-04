@@ -7,7 +7,7 @@
 
 #paths
 # set which batch you'll use. make sure c:\2011_scans_sorted has that numeric directory
-batch <- 4000 
+batch <- 1000 
 setwd(paste("C:\\\\2011_scans_sorted\\", batch, sep=""))
 
 # path to harvest list: set na.strings since not every blank was being picked up as NA
@@ -48,27 +48,30 @@ extraScans   <- setdiff(letno, harvList$letnoHarv) #scanned files with filename 
 missingScans <- setdiff(harvList$letnoHarv[harvList$no < (batch+1000) & harvList$no >= batch], letno) #letnos without scans
 missingScans <- na.omit(missingScans) #for some reason, the previous command makes NAs. omit them
 missingScansdf <- harvList[harvList$letnoHarv %in% missingScans,]
+missingScansdf <- missingScansdf[missingScansdf$gBagCorrected != "NH", ]
 
-
+###############################################################################
 #information
 # you'll want to run these bits manually, especially if you are checking multiple directories
 # if you see output like .J-4496 or other strangeness in letnos, it's probably a file naming
 # issue. fix the files and rerun starting from the start here comment
+extraScansFull <- extraScans      #first run only
+missingScansFull <- missingScansdf#first run only
+###############################################################################
 cat("the following letnos / filenames are not in the harvest list:", extraScans, "\ncheck the image for the correct letno")
 
 #some code to bind together multiple issues. you'll want to run these each time
-#first run: # extraScansFull <- extraScans
 extraScansFull <- c(extraScans, extraScansFull)
-
-#first run: # missingScansFull <- missingScansdf
 missingScansFull <- rbind(missingScansFull, missingScansdf)
 
+###############################################################################
+# run this AFTER you've c(*,*) and rbinded everything together
+###############################################################################
 #cut out columns and write out CSVs for turning into FIXME datasheets
 missingScansFull <- subset(missingScansFull, select=-c(cgheadid,nmmp,emmr,linePaper,garden,S.1,S.1,
                                                        S.2,S.3,S.4,letnoCorrected,Row,Pos,tt,
                                                        gBagHarv,S.5,harvnoteCorrected,S.6,Block,X,
                                                        cgheadid.1,gBagHarv.1,S.5.1,harvnoteHarv.1,
                                                        S.6.1,Block.1)) #i should remove NH
-missingScansFull <- missingScansFull[missingScansFull$gBagCorrected != "NH", ]
 write.csv(missingScansFull, file="..\\missingScansDatasheet.csv") #this writes to the directory above
 write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")
