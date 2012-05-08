@@ -70,8 +70,6 @@ if(firstrun == FALSE){
 
 cat("the following letnos / filenames are not in the harvest list:", extraScans, "\ncheck the image for the correct letno")
 
-
-
 ###############################################################################
 # run this AFTER you've c(*,*) and rbinded everything together
 ###############################################################################
@@ -82,6 +80,7 @@ if(output == TRUE){
                                                        gBagHarv,S.5,harvnoteCorrected,S.6,Block,X,
                                                        cgheadid.1,gBagHarv.1,S.5.1,harvnoteHarv.1,
                                                        S.6.1,Block.1))
+  missingScansFull <- missingScansFull[order(missingScansFull$no),] #sort the missing by no
   write.csv(missingScansFull, file="..\\missingScansDatasheet.csv") #this writes to the directory above
   write.csv(extraScansFull, file="..\\extraScansDatasheet.csv")     #don't overwrite existing files, k?
 }
