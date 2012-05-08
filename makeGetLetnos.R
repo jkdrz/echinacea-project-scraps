@@ -54,7 +54,7 @@ getLetnosBatches <- function(year = 2011, batch = 0) {
 #getLetnosBatches(2011, c(1000:9000)) #examples
 #x <- getLetnosBatches(2011, c(1000:3000)) #you can write it to an object
 
-#this function takes an argument in the form of a letno and will output a year. don't use a vector.
+#this function takes an argument in the form of a letno or a vector of letnos and will output a year.
 getLetnoYear <- function(testLetno){
   dd$year[dd$letno %in% testLetno]
   }
