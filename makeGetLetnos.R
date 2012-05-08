@@ -1,15 +1,11 @@
-# setwd("I:\\Departments\\Research\\EchinaceaCG2011")
+#this code comes from stuart. the file came from i:\departments\research\echinaceacg2011\
+setwd("I:\\Departments\\Research\\EchinaceaCG2011")
 # aa <- read.csv("I:\\Departments\\Research\\EchinaceaCG2011\\2009CgLetnos.csv", stringsAsFactor = FALSE)
 # bb <- read.csv("I:\\Departments\\Research\\EchinaceaCG2011\\2010CgLetnos.csv", stringsAsFactor = FALSE)
 # cc <- read.csv("I:\\Departments\\Research\\EchinaceaCG2011\\2011CgLetnos.csv", stringsAsFactor = FALSE)
 aa <- read.csv("2009CgLetnos.csv", stringsAsFactor = FALSE)
 bb <- read.csv("2010CgLetnos.csv", stringsAsFactor = FALSE)
 cc <- read.csv("2011CgLetnos.csv", stringsAsFactor = FALSE)
-head(aa)
-head(bb)
-head(cc)
-
-
 
 # add column year
 aa$year<- "2009"
@@ -17,8 +13,7 @@ bb$year<- "2010"
 cc$year<- "2011"
 # rbind in dd
 dd<- rbind(aa,bb,cc)
-str(dd)
-#dd
+
 # add column no
 dd$no <- as.integer(substr(dd$letno, 4, 7))
 dd <- dd[order(dd$no), ]
