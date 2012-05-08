@@ -41,24 +41,22 @@ write.csv(ans, file = fileName, row.names = FALSE)
 invisible(ans)  
 }
 
-
-getLetnos(2010, 1000)
-
-# (getLetnos(2010, 1000))
-
-df1 <- getLetnos(2011, 1000)
-df2 <- getLetnos(2011, 2000)
-
-getLetnos(2011,2000)
+#getLetnos(2010, 1000) #examples
+#df1 <- getLetnos(2011, 1000) #you can write it to an object
 
 getLetnosBatches <- function(year = 2011, batch = 0) {
   ans <- dd[dd$year %in% year & dd$batch %in% batch, c("batch", "no", "letno")]
   fileName <- paste("letnoListCG", year, "-batches", ".csv", sep= "")
-  write.csv(ans, file = fileName, row.names = FALSE)
+  write.csv(ans, file = fileName, row.names = FALSE) #this will clobber existing files
   invisible(ans)  
 }
 
-getLetnosBatches(2011, c(1000:9000))
+#getLetnosBatches(2011, c(1000:9000)) #examples
+#x <- getLetnosBatches(2011, c(1000:3000)) #you can write it to an object
 
-x <- getLetnosBatches(2011, c(1000:3000))
 
+
+###############################################################################
+# run the script up to here to get the data and functions set up.
+#
+###############################################################################
