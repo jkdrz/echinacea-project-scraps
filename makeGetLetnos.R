@@ -11,7 +11,7 @@ cc <- read.csv("2011CgLetnos.csv", stringsAsFactor = FALSE)
 aa$year<- "2009"
 bb$year<- "2010"
 cc$year<- "2011"
-# rbind in dd
+# rbind in dd - this is the large dataset
 dd<- rbind(aa,bb,cc)
 
 # add column no
@@ -54,9 +54,13 @@ getLetnosBatches <- function(year = 2011, batch = 0) {
 #getLetnosBatches(2011, c(1000:9000)) #examples
 #x <- getLetnosBatches(2011, c(1000:3000)) #you can write it to an object
 
-
+#this function takes an argument in the form of a letno and will output a year. don't use a vector.
+getLetnoYear <- function(testLetno){
+  dd$year[dd$letno %in% testLetno]
+  }
 
 ###############################################################################
 # run the script up to here to get the data and functions set up.
 #
 ###############################################################################
+
