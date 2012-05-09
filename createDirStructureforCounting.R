@@ -100,3 +100,6 @@ moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\4000\\",
                    randomHarvList4000$filename[randomHarvList4000$no < 5000 & randomHarvList4000$no >= 4000] , sep="")
 write.table(moveFiles, file="moveFiles4000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
 #again, find the batch file and double-click to run it. it's slow.
+dirSort <- rep(sample(1:87),each=6)[1:520]
+forDataSheet <- cbind(as.character(randomHarvList4000$filename), as.character(randomHarvList4000$happyDirs4000),dirSort)
+write.csv(forDataSheet,"C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/count2011_work/4000list.csv")
