@@ -30,11 +30,14 @@ dd[dd$no > 6999, "batch"] <- 7000
 dd[dd$no > 7999, "batch"] <- 8000
 dd[dd$no > 8999, "batch"] <- 9000
 
+#rename dd
+letnos2009to2011 <- dd
+
 
 # write function to extract vector
 
 getLetnos <- function(year = 2011, batch = 0) {
-vv <- dd[dd$year %in% year & dd$batch %in% batch, "letno"]
+vv <- letnos2009to2011[letnos2009to2011$year %in% year & letnos2009to2011$batch %in% batch, "letno"]
 ans <- data.frame(letno = vv)
 fileName <- paste("letnoListCG", year, "-batch", batch, ".csv", sep= "")
 write.csv(ans, file = fileName, row.names = FALSE)
@@ -45,7 +48,7 @@ invisible(ans)
 #df1 <- getLetnos(2011, 1000) #you can write it to an object
 
 getLetnosBatches <- function(year = 2011, batch = 0) {
-  ans <- dd[dd$year %in% year & dd$batch %in% batch, c("batch", "no", "letno")]
+  ans <- letnos2009to2011[letnos2009to2011$year %in% year & letnos2009to2011$batch %in% batch, c("batch", "no", "letno")]
   fileName <- paste("letnoListCG", year, "-batches", ".csv", sep= "")
   write.csv(ans, file = fileName, row.names = FALSE) #this will clobber existing files
   invisible(ans)  
@@ -56,11 +59,17 @@ getLetnosBatches <- function(year = 2011, batch = 0) {
 
 #this function takes an argument in the form of a letno or a vector of letnos and will output a year.
 getLetnoYear <- function(testLetno){
-  dd[dd$letno %in% testLetno,]
+  letnos2009to2011[letnos2009to2011$letno %in% testLetno,]
   }
+
+save(letnos2009to2011,
+     getLetnoYear,
+     getLetnos, 
+     getLetnosBatches, file="letnos09to11.RData")
 
 ###############################################################################
 # run the script up to here to get the data and functions set up.
 #
 ###############################################################################
-
+#load("I:/Departments/Research/McDonald/Weigh Files/massFileFunctions.v01.RData")
+#setwd("C:\\Documents and Settings\\ktaira\\My Documents\\Dropbox\\CGData\\175_weigh\\weigh2009\\weigh2009_in\\cg2009(from #1175 computer)")
