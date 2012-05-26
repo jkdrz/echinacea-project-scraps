@@ -7,11 +7,10 @@ fileNames # work with these files
 # this function reads a csv file and outputs df & csv
 # output is three dataframes--two useful for checking csv
 # dfs are invisible
-# writeCsv argument defaults to writing csv file
-# change output to stop writing csv file
+# writeCsv argument defaults to not writing csv file
 ##################################################
 
-readMassFile <- function(file, writeCsv = TRUE){
+readMassFile <- function(file, writeCsv = FALSE){
 mm <- read.csv(file)
 rawNames <- names(mm)
 mm$lineNo <- 1:dim(mm)[1]
@@ -86,7 +85,7 @@ investigateMassFiles()
 # this function puts all good records together in one df and, optionally, writes a csv
 ##################################################
 
-combineMassFiles <- function(path = ".", writeCsv = TRUE, fileName = "allMassFiles.csv") {
+combineMassFiles <- function(path = ".", writeCsv = FALSE, fileName = "allMassFiles.csv") {
 # run investigateMassFiles() and  return warning if a record count is zero
 problemFile <- any(investigateMassFiles()$records == 0)
 if(problemFile) stop("file with zero records")
@@ -111,8 +110,33 @@ combineMassFiles(writeCsv = FALSE)
 xx <- combineMassFiles(writeCsv = FALSE)
 str(xx)
 
+#####################################################
+# this function finds mass files that don't make proper csvs
+# probably resulting from an extra comma in the first line
+##################################################
+
+
+listBadFiles <- function(path = ".") {
+  fn <- list.files(pattern = "\\.txt$")
+  count <- length(fn)
+  #hh <-data.frame(index = 1: count, file= fn, strangeLines= 0, badLines = 0, records = 0)
+  jj <- logical(count)
+  try(                    # try enables function to return partial hh  
+    for(index in 1:count) { # loop through all txt files
+      nn <- names(readMassFile(fn[index], writeCsv = FALSE)$good)
+      jj[index] <- !all(nn == c("lineNo", "id", "timeStamp", "mass", "note", "header", "fileName"))
+    } # end for loop
+    ) # end try
+  fn[jj]
+}# end function listBadFiles
+#####################################################
+
+
+
+
 save("readMassFile", 
      "investigateMassFiles", 
+     "listBadFiles",
      "combineMassFiles", 
      file = "massFileFunctions.v02.RData")
 
