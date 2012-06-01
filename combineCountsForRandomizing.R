@@ -22,5 +22,5 @@ count8000 <- merge(de1,de2, by="filename")
 count8000 <- merge(count8000, de3, by="filename")
 #pull out the counts so I can use rowMeans
 counts    <- data.frame(count8000$count.x, count8000$count.y, count8000$count)
-count8000$meanCount <- rowMeans(counts,na.rm=TRUE)
-count8000$randomCount <- round((1/6) * count8000$meanCount)
+countMedians <- ceiling((1/6)*(apply(counts, 1, median, na.rm=TRUE)))
+count8000$numToWeigh <- countMedians
