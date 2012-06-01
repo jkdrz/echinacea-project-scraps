@@ -24,3 +24,11 @@ count8000 <- merge(count8000, de3, by="filename")
 counts    <- data.frame(count8000$count.x, count8000$count.y, count8000$count)
 countMedians <- ceiling((1/6)*(apply(counts, 1, median, na.rm=TRUE)))
 count8000$numToWeigh <- countMedians
+
+output <- data.frame(count8000$filename, count8000$numToWeigh)
+names(output) <- c("filename", "numToWeigh")
+let <- toupper(substr(output$filename, 5, 6)) #make things uppercase, since harvList uses uppercase
+no  <- substr(output$filename, 1, 4)
+letno <- paste(let, no, sep= "-")
+output$letno <- letno
+write.csv(output, "c:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/170_randomize/randomize2011/randomize2011_work/2011.CG1.8000CountsToRandomize.csv")
