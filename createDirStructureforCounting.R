@@ -26,15 +26,15 @@ harvList$filename <- paste(harvList$no, harvList$let, ".jpg", sep="")#turn letno
 
 ###############################################################################
 #
-# 8000 batch
+# 8000 batch - the other batches are mainly copy and pasted and find and replaced
 #
 ###############################################################################
-batch    <- 8000
-inb1and2 <- harvList$no < (batch+1000) & harvList$no >= batch
-h8000 <- harvList[inb1and2, ]
+batch    <- 8000 #set the batch
+inb1and2 <- harvList$no < (batch+1000) & harvList$no >= batch #pull out all the nums in the batch
+h8000 <- harvList[inb1and2, ] #dataframe of only the batch
 
 #we'll add a few dummy directories, just in case. pull out 490 entries
-happyList <- sample(happy$lowercase, 230, replace=FALSE)
+happyList <- sample(happy$lowercase, 230, replace=FALSE) #i'm not sure if this line is correct
 happyDirs <- rep(happyList, each=6)
 
 # put together the vectors, keeping lets and nos, so i can actually write out files in batches
@@ -57,6 +57,7 @@ write.csv(leftoverHappyDirs, file="C:/Documents and Settings/jdrizin/My Document
 # move files around this uses hard paths, which is ugly, but i think it's the only way
 
 #put together the copy commands with hard paths. use subsets to do batches manually.
+#update this for future years. look out for wide lines and make sure you change the right stuff
 moveFiles <- paste("copy ", "C:\\2011_scans_sorted\\8000\\", 
       randomHarvList8000$filename[randomHarvList8000$no < 9000 & randomHarvList8000$no >= 8000], " C:\\\\cg2011counting\\",
       randomHarvList8000$happyDirs[randomHarvList8000$no < 9000 & randomHarvList8000$no >= 8000], "\\",
