@@ -3,14 +3,15 @@
 # written 16 Mar 2012, first draft by josh, dir.ea from stuart's code 
 # (eventually it'll be part of an echinacea project library)
 # this needs to be run on a machine with I drive access and the scans in a 
-# directory with scans sorted into 1000s. T2000 is my current working machine for this.
+# directory with scans sorted into 1000s eg c:\dir\1000 c:\dir\2000 c:\dir\3000 etc
+#T2000 is my current working machine for this.
 
 #paths
 # set which batch you'll use. make sure c:\2011_scans_sorted has that numeric directory
-batch <- 8000
+batch <- 9000
 firstrun <- FALSE #set to TRUE the first time you run the script
 output   <- FALSE #set to true if you want to output a CSV. be careful not to overwrite existing files
-setwd(paste("C:\\\\2011_scans_sorted\\", batch, sep=""))
+setwd(paste("C:\\\\2011_scans_sorted\\", batch, sep="")) #change this line to your directory with number folders
 
 # path to harvest list: set na.strings since not every blank was being picked up as NA
 harvList <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\2011.CG1.Harvest.List.reconciled.csv", na.strings="")
@@ -53,10 +54,12 @@ missingScansdf <- harvList[harvList$letnoHarv %in% missingScans,] #pull out only
 missingScansdf <- missingScansdf[missingScansdf$gBagCorrected != "NH", ] #remove not-harvested
 
 ###############################################################################
-#information
-# you'll want to run these bits manually, especially if you are checking multiple directories
-# if you see output like .J-4496 or other strangeness in letnos, it's probably a file naming
-# issue. fix the files and rerun starting from the start here comment
+#information about errata
+# extraScans* objects list filenames where there is no associated letno (but in letno form)
+# you merely need to open the relevant images, check the letno, and rename it appropriately
+#
+# missingScans are dataframes with information about what's missing. this is useful for
+# turning into a worksheet to go hunt them down
 ###############################################################################
 
 if(firstrun == TRUE){
