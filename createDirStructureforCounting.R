@@ -149,3 +149,75 @@ write.table(moveFiles, file="moveFiles6000.bat", sep="", row.names=FALSE, col.na
 dirSort <- rep(sample(1:36),each=6)[1:211]
 forDataSheet <- cbind(as.character(randomHarvList6000$filename), as.character(randomHarvList6000$happyDirs6000),dirSort)
 write.csv(forDataSheet,"C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/count2011_work/6000list.csv")
+
+###############################################################################
+#
+# 1, 2, 3, 5, 7, 9000 batch
+#
+###############################################################################
+
+#i screwed up the happylist early, dang it. pull out happy words that have never been used...
+#read in old data
+happy <- read.csv("I:\\\\Departments\\Research\\EchinaceaCG2011\\happyWords.csv")
+old4000 <- read.csv("C:\\Documents and Settings\\jdrizin\\My Documents\\Dropbox\\CGData\\165_count\\count2011\\2011.CG1.HarvList4000.csv")
+old6000 <- read.csv("C:\\Documents and Settings\\jdrizin\\My Documents\\Dropbox\\CGData\\165_count\\count2011\\2011.CG1.HarvList6000.csv")
+old8000 <- read.csv("C:\\Documents and Settings\\jdrizin\\My Documents\\Dropbox\\CGData\\165_count\\count2011\\2011.CG1.HarvList8000.csv")
+oldHappyDirs <- c(as.character(old4000$happyDirs4000), as.character(old6000$happyDirs6000), as.character(old8000$happyDirs8000))
+#pull out unused happywords
+oldHappyDirs <- unique(oldHappyDirs)
+happy <- happy[!(happy$lowercase %in% oldHappyDirs),]
+happy <- as.character(happy$lowercase)
+
+happy <- happy$x[6:length(happy$x)] #celebrate was already used, so drop the first 2
+happyDirs <- as.character(happy)
+happy <- happy[-7] #remove the double word
+
+#pull out 322 directories, to encompass the 1931 in hRest
+happyList <- sample(happy, 322, replace=FALSE)
+happyDirs <- rep(happyList, each=6)
+happyDirs <- happyDirs[1:(length(happyDirs)-1)]
+
+#pull out numbers. differs from above scripts, but is functionally similar
+inb1and2 <- c(1000:3999, 5000:5999, 7000:7999, 9000:9999)
+hRest <- harvList[harvList$no %in% inb1and2,]
+
+# put together the vectors, keeping lets and nos, so i can actually write out files in batches
+hRest <- hRest[sample(1: dim(hRest)[1]), ] #sample the dataframe. sample(h8000) won't work
+randomHarvListRest <- data.frame(hRest, happyDirs)
+leftoverHappyDirs <- happyDirs[(length(randomHarvListRest$letnoHarv)+1):length(happyDirs)]
+
+#write out some useful files
+write.csv(randomHarvListRest, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.HarvListRest.csv")
+#write.csv(leftoverHappyDirs, file="C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/2011.CG1.LeftoverHappyDirs-400060008000.csv")
+
+# create directory structure. only run this this first time.
+setwd("C:\\\\albatross\\")
+dirCommands <- paste("mkdir ", "C:\\albatross\\", unique(randomHarvListRest$happyDirs), sep="")
+write.table(dirCommands, file="mkdirCommands.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+#this writes hard paths. find the .bat file and double-click it to run it.
+
+# move files around this uses hard paths, which is ugly, but i think it's the only way
+#put together the copy commands with hard paths. use subsets to do batches manually.
+moveFiles1000 <- paste("copy ", "C:\\2011_scans_sorted\\1000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 1000:1999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 1000:1999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 1000:1999] , sep="")
+write.table(moveFiles1000, file="moveFiles1000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE) 
+
+moveFiles2000 <- paste("copy ", "C:\\2011_scans_sorted\\2000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 2000:2999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 2000:2999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 2000:2999] , sep="")
+write.table(moveFiles2000, file="moveFiles2000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+moveFiles3000 <- paste("copy ", "C:\\2011_scans_sorted\\3000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 3000:3999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 3000:3999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 3000:3999] , sep="")
+write.table(moveFiles3000, file="moveFiles3000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+moveFiles5000 <- paste("copy ", "C:\\2011_scans_sorted\\5000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 5000:5999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 5000:5999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 5000:5999] , sep="")
+write.table(moveFiles5000, file="moveFiles5000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+moveFiles7000 <- paste("copy ", "C:\\2011_scans_sorted\\7000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 7000:7999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 7000:7999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 7000:7999] , sep="")
+write.table(moveFiles7000, file="moveFiles7000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+moveFiles9000 <- paste("copy ", "C:\\2011_scans_sorted\\9000\\",                    randomHarvListRest$filename[randomHarvListRest$no %in% 9000:9999], " C:\\\\albatross\\", randomHarvListRest$happyDirs[randomHarvListRest$no %in% 9000:9999], "\\", randomHarvListRest$filename[randomHarvListRest$no %in% 9000:9999] , sep="")
+write.table(moveFiles9000, file="moveFiles9000.bat", sep="", row.names=FALSE, col.names=FALSE, quote=FALSE)
+
+#again, find the batch file and double-click to run it. it's slow.
+
+forDataSheet <- cbind(as.character(randomHarvListRest$filename), as.character(randomHarvListRest$happyDirs))
+write.csv(forDataSheet,"C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/count2011_work/Restlist.csv")
+
