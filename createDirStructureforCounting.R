@@ -68,7 +68,7 @@ write.table(moveFiles, file="moveFiles8000.bat", sep="", row.names=FALSE, col.na
 
 ###############################################################################
 #
-# 4000 batch
+# 4000 batch - hey, i'm a comment!
 #
 ###############################################################################
 #read in the old happy words list
