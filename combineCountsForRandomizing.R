@@ -1,6 +1,12 @@
 #this script is used to combine the seperated cg counts in the 2011 8000 batch
 #other counts are on one datasheet, and don't need to be combined in this way
+#don't just run the whole script. it shouldn't clobber anything, but still.
 
+###############################################################################
+#this code works for the 8000s, which is the old datasheet. look below for code
+#that works with the newer landscape, 3-person-on-one-page datasheets,
+#which are for everything other than the 8000s
+###############################################################################
 #read in the data
 setwd("C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/count2011_work/")
 de1 <- read.csv("2011.CG1.countData8000-de1.csv", na.strings="") #r seems to read
@@ -32,3 +38,29 @@ no  <- substr(output$filename, 1, 4)
 letno <- paste(let, no, sep= "-")
 output$letno <- letno
 write.csv(output, "c:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/170_randomize/randomize2011/randomize2011_work/2011.CG1.8000CountsToRandomize.csv")
+
+###############################################################################
+#this code works for the newer landscape, 3-person-on-one-page datasheets,
+#which are for everything other than the 8000s
+###############################################################################
+#read in the data
+setwd("C:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/165_count/count2011/count2011_work/")
+de1 <- read.csv("2011.CG1.countData6000.csv", na.strings="") #r seems to read
+names(de1)[1:2] <- c("fileName", "folder") #i accidentally reversed these. same for 4000s, i bet
+
+#drop empty rows
+de1 <- de1[complete.cases(de1$folder),]
+
+#pull out the counts so I can use rowMeans
+counts    <- data.frame(de1$count1, de1$count2, de1$count3)
+countMedians <- ceiling((1/6)*(apply(counts, 1, median, na.rm=TRUE)))
+de1$numToWeigh <- countMedians
+
+output <- data.frame(de1$fileName, de1$numToWeigh)
+names(output) <- c("fileName", "numToWeigh")
+let <- toupper(substr(output$fileName, 5, 6)) #make things uppercase, since harvList uses uppercase
+no  <- substr(output$fileName, 1, 4)
+letno <- paste(let, no, sep= "-")
+output$letno <- letno
+write.csv(output, "c:/Documents and Settings/jdrizin/My Documents/Dropbox/CGData/170_randomize/randomize2011/randomize2011_work/2011.CG1.6000CountsToRandomize.csv")
+
